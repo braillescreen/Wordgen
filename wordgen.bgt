@@ -1,0 +1,29 @@
+tts_voice v;
+file f;
+bool debugmode=false,askforfile=false,logtofile=true,use_tts=true;
+void main()
+{
+display("Word Generator","Getting word file from the internet. Please wait.");
+string url=url_get("http://uk.pwilson-web.com/words_alpha.txt");
+if(url.is_empty())
+display("Error","There was an error getting the words file from the internet.",true);
+string[]d=string_split(url,"\r\n",false);
+if(debugmode) alert("Debug",d.length()+" lines.");
+int r=random(0,string_to_number(d.length()));
+display("Word","The word is \""+d[r]+"\". The word is "+d[r].length()+" letters long and starts with the letter "+d[r][0]+". It is on line "+r+" in the online dictionary.");
+if(logtofile)
+{
+f.open("your_word.log","ab");
+f.write(d[r]+"\r\n");
+f.close;
+} //end if
+} //end main
+void display(string title,string text,bool quit=false)
+{
+//Used to save 3 lines of code or so.
+//Title is only for in case an alert is used. If seen and it is using TTS, will simply be ignored.
+if(use_tts) v.speak(text);
+else alert(title,text);
+if(quit) exit();
+}
+//Woooooo; I don't have to touch this program ever again! For the record, it was last modified 4/7/2020 at 2:09 PM.
